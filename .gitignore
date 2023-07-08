@@ -1,0 +1,10 @@
+.venv/
+
+*.pyc
+__pycache__/
+
+instance/
+
+vid-list.csv
+videos.csv
+text.txt

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>Resurgence: YouTube Video Analytics</h1>
+{% endblock %}
+
+{% block content %}
+
+<body>
+
+    <p><b>Results for playlist "{{playlist_name}}"</b></p>
+
+    {{ dataframe | safe }}
+
+</body>
+
+{% endblock %}

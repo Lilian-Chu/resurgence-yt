@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}YouTube Video Analytics{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<body>
+
+    <p>Welcome to the Resurgence Video Analytics tool!
+    You can input multiple YouTube videos and the tool will extract basic information about each video,
+    including the title, channel name and subscribers, publication date, views, and tags. This tool is a work 
+    in progress, but we plan to add more functionality to the tool so it can better help analyze video performance.</p>
+
+    <p><b>What the Video Analytics tool can do now:</b></p>
+    <ul>
+        <li>Input a playlist of videos and extract basic info about the videos in the playlist</li>
+    </ul>
+
+    <p><b>What the Video Analytics tool will be able to do soon:</b></p>
+    <ul>
+        <li>Find trends in video stats such as common tags for videos</li>
+        <li>Visualize trends in data using graphs</li>
+    </ul>
+
+    <p>To get started, enter a URL to a YouTube playlist of videos. The playlist must be public!</p>
+
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+
+    <form method="POST" class="enter-url">
+        <div class="form-group">
+            <input name="url" id="url-field" placeholder="YouTube Playlist URL" required>
+            <input type="submit" value="Extract Info">
+        </div>
+    </form>
+
+
+</body>
+
+{% endblock %}

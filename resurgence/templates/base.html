@@ -1,0 +1,27 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Resurgence</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+<ul id="navbar">
+  <li><a id="logo-link" href="{{ url_for('home.index')}}">Resurgence</a></li>
+  <li><a href="{{ url_for('home.about')}}">About</a></li>
+  <li><a href="{{ url_for('home.video_analysis')}}">Tools</a></li>
+  {% if g.user %}
+    <li style="float:right"><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+    <li style="float:right"><a href="{{ url_for('user.view_history') }}">{{ g.user['username'] }}</a></li>
+  {% else %}
+    <li style="float:right"><a href="{{ url_for('auth.login') }}">Log In</a></li>
+    <li style="float:right"><a href="{{ url_for('auth.register') }}">Register</a></li>
+  {% endif %}
+</ul>
+
+<hr>
+
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% block content %}{% endblock %}
+</section>
+

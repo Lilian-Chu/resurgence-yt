@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Entry {{ info['id'] }} {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<body>
+
+    <p><b>Results for playlist "{{ info['playlist_title'] }}"</b>
+      <span style="float:right"><a href="{{ url_for('user.view_history') }}">Back to List</a></span>
+    </p>
+    <p><b>Created on {{ info['created'].strftime('%Y-%m-%d') }}</b></p>
+
+    {{ info['dataframe'] | safe }}
+
+    <form action="{{ url_for('user.delete', id=info['id']) }}" method="post">
+      <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+    </form>
+
+    <script>
+
+      function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementsByClassName("dataframe")[0];
+        switching = true;
+        dir = "asc";
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+          //start by saying: no switching is done:
+          switching = false;
+          rows = table.rows;
+          /*Loop through all table rows (except the
+          first, which contains table headers):*/
+          for (i = 1; i < (rows.length - 1); i++) {
+            //start by saying there should be no switching:
+            shouldSwitch = false;
+            /*Get the two elements you want to compare,
+            one from current row and one from the next:*/
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            //check if the two rows should switch place:
+            if (dir == "asc")
+            {
+              if (x.innerHTML > y.innerHTML)
+              {
+                shouldSwitch = true;
+                break;
+              }
+            }
+            else if (dir == "desc")
+            {
+              if (x.innerHTML < y.innerHTML)
+              {
+                shouldSwitch = true;
+                break;
+              }
+            }
+          }
+          if (shouldSwitch) {
+          /*If a switch has been marked, make the switch
+          and mark that a switch has been done:*/
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          switchcount++;
+        } else {
+          if (switchcount == 0 && dir == "asc")
+          {
+            dir = "desc";
+            switching = true;
+          }
+        }
+      }
+    }
+    </script>
+
+</body>
+
+{% endblock %}
