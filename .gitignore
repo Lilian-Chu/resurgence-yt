@@ -8,3 +8,5 @@ instance/
 vid-list.csv
 videos.csv
 text.txt
+test_get_tags.py
+hello.py
