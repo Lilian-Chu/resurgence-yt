@@ -9,14 +9,14 @@
 <body>
 
     {% if info is defined and info %}
-        <table id="info-table">
+        <table id="playlist-table">
             <tr>
                 <th>Playlist Title</th>
                 <th>Date Created</th>
             </tr>
         {% for i in info %}
         <tr>
-            <td><a href="{{ url_for('user.view_entry', id=i['id']) }}">{{ i['playlist_title'] }}</a></td>
+            <td><a href="{{ url_for('user.view_entry', id=i['playlist_id']) }}">{{ i['playlist_title'] }}</a></td>
             <td>{{ i['created'].strftime('%Y-%m-%d') }}</td>
         </tr>
         {% endfor %}

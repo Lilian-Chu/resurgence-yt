@@ -1,21 +1,42 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Entry {{ info['id'] }} {% endblock %}</h1>
+  <h1>{% block title %}Entry {{ playlist['playlist_id'] }} {% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 
 <body>
 
-    <p><b>Results for playlist "{{ info['playlist_title'] }}"</b>
-      <span style="float:right"><a href="{{ url_for('user.view_history') }}">Back to List</a></span>
-    </p>
-    <p><b>Created on {{ info['created'].strftime('%Y-%m-%d') }}</b></p>
+  <p><b>Results for playlist "{{ playlist['playlist_title'] }}"</b>
+    <span style="float:right"><a href="{{ url_for('user.view_history') }}">Back to List</a></span>
+  </p>
+  <p><b>Created on {{ playlist['created'].strftime('%Y-%m-%d') }}</b></p>
 
-    {{ info['dataframe'] | safe }}
+  <table id="playlist-table">
+    <tr>
+        <!--<th id='url' onclick='sortTable(0)'>URL</th>-->
+        <th id='title' onclick='sortTable(1)'>Title</th>
+        <th id='channel' onclick='sortTable(2)'>Channel Name</th>
+        <th id='sub' onclick='sortTable(3)'>Sub Count</th>
+        <th id='date' onclick='sortTable(4)'>Date</th>
+        <th id='views' onclick='sortTable(5)'>Views</th>
+        <th id='tags' onclick='sortTable(6)'>Tags</th>
+    </tr>
+{% for v in videos %}
+  <tr>
+    <!--<td><a href="{{ v['video_url'] }}">URL</a></td>-->
+    <td><a href="{{ v['video_url'] }}">{{ v['video_title'] }}</a></td>
+    <td>{{ v['channel_name'] }}</td>
+    <td>{{ v['sub_count'] }}</td>
+    <td>{{ v['video_date'] }}</td>
+    <td>{{ v['views'] }}</td>
+    <td>{{ v['tags'] }}</td>
+  </tr>
+{% endfor %}
+</table>
 
-    <form action="{{ url_for('user.delete', id=info['id']) }}" method="post">
+    <form action="{{ url_for('user.delete', id=playlist['playlist_id']) }}" method="post">
       <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
     </form>
 

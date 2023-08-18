@@ -11,9 +11,9 @@ bp = Blueprint('user', __name__, url_prefix="/user")
 def get_post(id, check_author=True):
     info = (
         get_db().execute(
-            "SELECT i.id, playlist_title, html_df, created, owner_id, username"
-            " FROM info i JOIN user u ON i.owner_id = u.id"
-            " WHERE i.id = ?",
+            "SELECT i.playlist_id, playlist_title, created, owner_id, username"
+            " FROM playlist i JOIN user u ON i.owner_id = u.id"
+            " WHERE i.playlist_id = ?",
             (id,),
         ).fetchone()
     )
@@ -31,8 +31,8 @@ def get_post(id, check_author=True):
 def view_history():
     db = get_db()
     info_entries = db.execute(
-        "SELECT i.id, playlist_title, html_df, created, owner_id, username"
-        " FROM info i JOIN user u ON i.owner_id = u.id"
+        "SELECT i.playlist_id, playlist_title, created, owner_id, username"
+        " FROM playlist i JOIN user u ON i.owner_id = u.id"
         " ORDER BY created DESC"
     ).fetchall()
     return render_template('user/history.html', info=info_entries)
@@ -41,15 +41,19 @@ def view_history():
 @login_required
 def view_entry(id):
 
-    info = get_post(id)
+    playlist = get_post(id)
+    db = get_db()
+    videos = db.execute(
+        "SELECT * FROM video WHERE playlist_id = ?", (id,)
+    ).fetchall()
 
-    return render_template('user/entry.html', info=info)
+    return render_template('user/entry.html', playlist=playlist, videos=videos)
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
 def delete(id):
     get_post(id)
     db = get_db()
-    db.execute('DELETE FROM info WHERE id = ?', (id,))
+    db.execute('DELETE FROM playlist WHERE playlist_id = ?', (id,))
     db.commit()
     return redirect(url_for('home.index'))

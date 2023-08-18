@@ -35,8 +35,8 @@ def single_video_info(url, driver):
     return title,channel,sub_count,vid_date,vid_views,tags
 
 
-def playlist_info(playlist):
-    df2 = pd.DataFrame(columns = ['URL', 'Title', 'Channel Name', 'Sub Count', 'Date', 'Views', 'Tags'])
+def playlist_info(playlist, id):
+    df2 = pd.DataFrame(columns = ['playlist_id', 'video_url', 'video_title', 'channel_name', 'sub_count', 'video_date', 'views', 'tags'])
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(playlist)
     time.sleep(3)
@@ -45,7 +45,7 @@ def playlist_info(playlist):
     list_of_urls = [i.get_attribute("href") for i in list_of_vids]
     for url in list_of_urls:
         title,channel,sub_count,vid_date,views,vid_tags = single_video_info(url, driver)
-        dict1 = {'URL':url, 'Title':title, 'Channel Name':channel, 'Sub Count':sub_count, 'Date':vid_date, 'Views':views, 'Tags':vid_tags}
+        dict1 = {'playlist_id': id, 'video_url':url, 'video_title':title, 'channel_name':channel, 'sub_count':sub_count, 'video_date':vid_date, 'views':views, 'tags':vid_tags}
         # Add information to a dataframe
         df_dict = pd.DataFrame([dict1])
 
