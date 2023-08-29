@@ -16,12 +16,12 @@
   <table id="playlist-table">
     <tr>
         <!--<th id='url' onclick='sortTable(0)'>URL</th>-->
-        <th id='title' onclick='sortTable(1)'>Title</th>
-        <th id='channel' onclick='sortTable(2)'>Channel Name</th>
-        <th id='sub' onclick='sortTable(3)'>Sub Count</th>
-        <th id='date' onclick='sortTable(4)'>Date</th>
-        <th id='views' onclick='sortTable(5)'>Views</th>
-        <th id='tags' onclick='sortTable(6)'>Tags</th>
+        <th id='title' class="format-text" onclick='sortTable(0)'>Title</th>
+        <th id='channel' class="format-text" onclick='sortTable(1)'>Channel Name</th>
+        <th id='sub' class="format-int" onclick='sortTable(2)'>Sub Count</th>
+        <th id='date' class="format-date" onclick='sortTable(3)'>Date</th>
+        <th id='views' class="format-int" onclick='sortTable(4)'>Views</th>
+        <th id='tags' class="format-text" onclick='sortTable(5)'>Tags</th>
     </tr>
 {% for v in videos %}
   <tr>
@@ -44,7 +44,7 @@
 
       function sortTable(n) {
         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementsByClassName("dataframe")[0];
+        table = document.getElementById("playlist-table");
         switching = true;
         dir = "asc";
         /*Make a loop that will continue until
