@@ -46,8 +46,19 @@ def view_entry(id):
     videos = db.execute(
         "SELECT * FROM video WHERE playlist_id = ?", (id,)
     ).fetchall()
+    
+    video_list = []
+    for v in videos:
+        video_list.append({k: v[k] for k in v.keys()})
+        tag_list = db.execute(
+            "SELECT tag_text FROM tag WHERE video_id = ?", (v['video_id'],)
+        ).fetchall()
+        tag_list = [tag[0] for tag in tag_list]
+        tags_string = ", "
+        tags_string = tags_string.join(tag_list)
+        video_list[-1]['tags'] = tags_string
 
-    return render_template('user/entry.html', playlist=playlist, videos=videos)
+    return render_template('user/entry.html', playlist=playlist, videos=video_list)
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required

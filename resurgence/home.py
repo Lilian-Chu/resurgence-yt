@@ -36,7 +36,7 @@ def video_analysis():
 
             dataframe = ""
 
-            playlist_name = get_video_info.get_playlist_name(url)
+            playlist_name = get_video_info.api_get_playlist_title(url)
             # If user is logged in, we need to make a new playlist entry
             # and associate each video in the playlist with that entry
             # If not logged in, just make the playlist 0 (it won't be used)
@@ -51,9 +51,9 @@ def video_analysis():
                 playlist_id = cursor.lastrowid
                 print(playlist_id)
                 db.commit()
-                dataframe = get_video_info.playlist_info(url, playlist_id)
+                dataframe = get_video_info.api_get_playlist_info(url, playlist_id)
             else:
-                dataframe = get_video_info.playlist_info(url, 0)
+                dataframe = get_video_info.api_get_playlist_info(url, 0)
             
 
             # Add HTML id tags to make formatting easier            
@@ -69,14 +69,15 @@ def video_analysis():
             html_df = html_df.replace("<th>tags</th>", "<th id='tags' onclick='sortTable(6)'>Tags</th>")
 
             # If user is not logged in, simply display results
-            if not g.user:
-                return render_template('results.html', playlist_name=playlist_name, dataframe=html_df)
+            # if not g.user:
+            #     return render_template('results.html', playlist_name=playlist_name, dataframe=html_df)
 
             # If user is logged in, convert dataframe to sql and append it to the videos table
-            db = get_db()
-            rows_affected = dataframe.to_sql('video', con=db, if_exists="append", index=False)
-            print(rows_affected)
-            db.commit()
+            # db = get_db()
+            # cursor = db.cursor()
+            # rows_affected = dataframe.to_sql('video', con=cursor, if_exists="append", index=False)
+            # print(rows_affected)
+            # db.commit()
 
             return render_template('results.html', playlist_name=playlist_name, dataframe=html_df)
         

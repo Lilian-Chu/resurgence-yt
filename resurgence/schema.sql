@@ -27,6 +27,11 @@ CREATE TABLE video (
     sub_count INTEGER NOT NULL,
     video_date TEXT NOT NULL,
     views INTEGER NOT NULL,
-    tags TEXT,
     FOREIGN KEY (playlist_id) REFERENCES playlist (playlist_id)
+);
+
+CREATE TABLE tag (
+    tag_text TEXT NOT NULL,
+    video_id INTEGER NOT NULL,
+    FOREIGN KEY (video_id) REFERENCES video (video_id)
 );
