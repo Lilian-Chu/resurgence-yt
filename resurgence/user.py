@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 
 from resurgence.auth import login_required
 from resurgence.db import get_db
+import get_video_info
 
 bp = Blueprint('user', __name__, url_prefix="/user")
 
@@ -40,6 +41,8 @@ def view_history():
 @bp.route('/<int:id>/entry.html')
 @login_required
 def view_entry(id):
+
+    get_video_info.top_k_frequent_tags(id, 5)
 
     playlist = get_post(id)
     db = get_db()
