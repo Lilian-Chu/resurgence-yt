@@ -36,6 +36,12 @@ body {
     font-size: larger;
 }
 
+footer {
+    position: relative;
+    bottom: 10px;
+    width: 100%;
+}
+
 .user-auth {
     margin: 1em 0;
 }

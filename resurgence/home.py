@@ -7,6 +7,7 @@ sys.path.append('C:\\Users\\lilia\\OneDrive\\Documents\\Resume Projects\\scrape_
 import get_video_info
 import pandas as pd
 import sqlite3
+import re
 
 from resurgence.db import get_db
 
@@ -35,8 +36,10 @@ def video_analysis():
         if error is None:
 
             dataframe = ""
+            # Strip playlist URL to playlist ID
+            api_playlist_id = re.findall("[&?]list=([a-zA-Z0-9_-]+)", url)[0]
 
-            playlist_name = get_video_info.api_get_playlist_title(url)
+            playlist_name = get_video_info.api_get_playlist_title(api_playlist_id)
             # If user is logged in, we need to make a new playlist entry
             # and associate each video in the playlist with that entry
             # If not logged in, just make the playlist 0 (it won't be used)
@@ -48,12 +51,12 @@ def video_analysis():
                     " VALUES (?, ?, ?)",
                     (g.user['id'], playlist_name, url)
                 )
-                playlist_id = cursor.lastrowid
-                print(playlist_id)
+                sql_playlist_id = cursor.lastrowid
+                print(sql_playlist_id)
                 db.commit()
-                dataframe = get_video_info.api_get_playlist_info(url, playlist_id)
+                dataframe = get_video_info.api_get_playlist_info(api_playlist_id, sql_playlist_id)
             else:
-                dataframe = get_video_info.api_get_playlist_info(url, 0)
+                dataframe = get_video_info.api_get_playlist_info(api_playlist_id, 0)
             
 
             # Add HTML id tags to make formatting easier            

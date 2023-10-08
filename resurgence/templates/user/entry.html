@@ -8,7 +8,7 @@
 
 <body>
 
-  <p><b>Results for playlist "{{ playlist['playlist_title'] }}"</b>
+  <p>Results for playlist <b>"{{ playlist['playlist_title'] }}"</b>
     <span style="float:right"><a href="{{ url_for('user.view_history') }}">Back to List</a></span>
   </p>
   <p><b>Created on {{ playlist['created'].strftime('%Y-%m-%d') }}</b></p>

@@ -28,7 +28,13 @@ def api_get_video_info(video_id, playlist_sql_id):
             part='statistics, snippet',
             id=video_id
         )
-        response = request.execute()['items'][0]
+        response = request.execute()['items']
+
+        # If the video is private or unavailable, the response is blank
+        if not response: 
+            return False, False, False, False, False, False
+        
+        response = response[0]
 
         title = response['snippet']['title']
         channel = response['snippet']['channelTitle']
@@ -56,7 +62,7 @@ def api_get_video_info(video_id, playlist_sql_id):
         # and i entries in tag, where i = number of tags this video has
         # We do this here so we don't have to iterate through the dataframe later
         # Can't use to_sql because we also want to add to the tag table
-        if False and g.user:
+        if g.user:
             vid_url = "https://youtu.be/" + video_id
             db = get_db()
             cursor = db.cursor()
@@ -136,6 +142,9 @@ def api_get_playlist_info(playlist_id, sql_id):
 
         for video in video_list:
             title, channel, sub_count, vid_date, views, vid_tags = api_get_video_info(video, sql_id)
+            # If the video is unavailable or private
+            if not title:
+                continue
             # Contruct a YouTube URL for display
             vid_url = "https://youtu.be/" + video
             dict1 = {'playlist_id': sql_id, 'video_url':vid_url, 'video_title':title, 'channel_name':channel, 'sub_count':sub_count, 'video_date':vid_date, 'views':views, 'tags':vid_tags}
@@ -195,12 +204,6 @@ def main():
     print(vid_date)
     print(vid_views)
     print(tags)
-
-    # test_playlist_id = 'PL9qQXSjI-WOqgtYxpBlrJn8d__xzzb8mN'
-    # dataframe = api_get_playlist_info(test_playlist_id, 1)
-    # title = api_get_playlist_title(test_playlist_id)
-    # print(title)
-    # print(dataframe)
 
 
 
